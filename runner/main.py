@@ -1,7 +1,9 @@
 from logging import info
 from os import environ
 from random import Random
+from select import select
 
+from parcs.network import recv
 from parcs.server import Runner, serve
 
 
@@ -17,18 +19,18 @@ class PollardRunner(Runner):
 
         for _ in range(worker_count):
             task = self.engine.run("kharacternyk/pollard")
-            seed = random.randint(0, 2048)
-            task.send_all(number, seed)
+            initial_x = random.randint(0, number - 1)
+            task.send_all(number, initial_x)
             tasks.append(task)
 
-            info(f"Spawned a worker with seed {seed}")
+            info(f"Spawned a worker with initial x = {initial_x}")
 
-        results = [task.recv() for task in tasks]
+        (socket, *_), *_ = select([task.client for task in tasks], [], [])
+
+        info(f"Factor: {recv(socket)}")
 
         for task in tasks:
             task.shutdown()
-
-        info(f"Results: {results}")
 
 
 serve(PollardRunner())

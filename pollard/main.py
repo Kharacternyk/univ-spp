@@ -7,10 +7,10 @@ from parcs.server import Service, serve
 class Pollard(Service):
     def run(self):
         number = self.recv()
-        seed = self.recv()
-        info(f"Factoring {number} with seed {seed}")
+        initial_x = self.recv()
+        info(f"Factoring {number} with initial x = {initial_x}")
 
-        y = x = 2
+        y = x = initial_x
         divisor = 1
         while divisor == 1:
             x = polynomial(x, number)
