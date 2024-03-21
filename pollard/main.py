@@ -8,7 +8,7 @@ class Pollard(Service):
     def run(self):
         number = self.recv()
         initial_x = self.recv()
-        info(f"Factoring {number} with initial x = {initial_x}")
+        info(f"Searching for a prime factor of {number} with initial x = {initial_x}")
 
         y = x = initial_x
         divisor = 1

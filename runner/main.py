@@ -13,7 +13,7 @@ class PollardRunner(Runner):
         number = int(environ["number"])
         worker_count = int(environ["worker_count"])
 
-        info(f"Factoring {number} on {worker_count} workers")
+        info(f"Searching for a prime factor of {number} on {worker_count} workers")
 
         tasks = []
 
